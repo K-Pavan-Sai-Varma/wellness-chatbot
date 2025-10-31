@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard | Health Assistant</title>
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+  <style>
+    body {
+      background: #f0f4f5;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 230px;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      background: linear-gradient(180deg, #43a047, #2e7d32);
+      color: white;
+      padding: 25px 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .sidebar h4 {
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      padding: 10px 15px;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+    .sidebar a:hover, .sidebar a.active {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Main Section */
+    .main {
+      margin-left: 250px;
+      padding: 25px;
+    }
+
+    /* Dashboard Boxes */
+    .card-box {
+      background: #fff;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: all 0.3s ease;
+      height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .card-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-box i {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .card-box h5 {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .card-box p {
+      margin: 0;
+    }
+
+    /* Chart Section */
+    .chart-section {
+      background: #fff;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-top: 30px;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 360px;
+      width: 100%;
+    }
+
+    ul#categoryLegend {
+      list-style: none;
+      padding: 0;
+      text-align: center;
+      margin-top: 15px;
+    }
+    ul#categoryLegend li {
+      display: inline-block;
+      margin-right: 12px;
+      font-size: 14px;
+      color: #444;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .main { margin-left: 0; }
+      .sidebar { position: relative; width: 100%; height: auto; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <h4><i class="bi bi-person-lock"></i> Admin Panel</h4>
+    <a href="/admin/dashboard" class="active"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a href="/admin/knowledge"><i class="bi bi-book"></i> Knowledge Base</a>
+    <a href="/admin/feedback"><i class="bi bi-chat-left-dots"></i> Feedback</a>
+    <a href="/admin/settings"><i class="bi bi-gear"></i> Settings</a>
+    <a href="/admin/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+  </div>
+
+  <div class="main">
+    <h2 class="mb-4">Dashboard Overview</h2>
+
+    <!-- Equal Sized Boxes -->
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="card-box" onclick="window.location.href='/admin/users'">
+          <i class="bi bi-people text-success"></i>
+          <h5>Total Users</h5>
+          <p class="fs-4 fw-bold" id="user_count">--</p>
+          <span class="badge bg-success text-white">Click to view</span>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="card-box">
+          <i class="bi bi-chat-square-text text-primary"></i>
+          <h5>Total Queries</h5>
+          <p class="fs-4 fw-bold" id="chat_count">--</p>
+          <span class="badge bg-primary text-white">Auto updated</span>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="card-box">
+          <i class="bi bi-hand-thumbs-up text-warning"></i>
+          <h5>Positive Feedback</h5>
+          <p class="fs-4 fw-bold" id="positive_percent">--%</p>
+          <span class="badge bg-warning text-dark">User rating</span>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="card-box">
+          <i class="bi bi-heart-pulse text-danger"></i>
+          <h5>Health Topics</h5>
+          <p class="fs-4 fw-bold" id="health_topics">--</p>
+          <span class="badge bg-danger text-white">Knowledge base</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+   <div class="row mt-4">
+  <!-- Pie Chart -->
+  <div class="col-lg-6">
+    <div class="chart-section text-center">
+      <h5>Top Query Categories</h5>
+      <div class="chart-container d-flex justify-content-center align-items-center">
+        <canvas id="categoryPieChart" style="max-width: 320px;"></canvas>
+      </div>
+
+      <!-- Rounded 2x2 legend grid -->
+      <div id="categoryLegend" 
+           class="mt-4 d-grid" 
+           style="grid-template-columns: repeat(2, 1fr); gap: 10px; justify-items: center;">
+      </div>
+    </div>
+  </div>
+
+  <!-- Line Chart -->
+  <div class="col-lg-6">
+    <div class="chart-section text-center">
+      <h5>Query Trends Over Time</h5>
+      <div class="chart-container"><canvas id="dailyLineChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<script>
+async function loadDashboardData() {
+  const res = await fetch('/admin/api/dashboard_data');
+  const data = await res.json();
+
+  // Update counters
+  document.getElementById('user_count').innerText = data.total_users;
+  document.getElementById('chat_count').innerText = data.total_queries;
+  document.getElementById('positive_percent').innerText = data.positive_feedback_percent + '%';
+  document.getElementById('health_topics').innerText = data.total_health_topics;
+
+  const totalCount = Object.values(data.categories).reduce((a, b) => a + b, 0);
+  const colors = ['#2196F3', '#FFC107', '#FF5722', '#9C27B0', '#00BCD4'];
+
+  // PIE CHART
+  const ctxPie = document.getElementById('categoryPieChart').getContext('2d');
+  new Chart(ctxPie, {
+    type: 'pie',
+    data: {
+      labels: Object.keys(data.categories),
+      datasets: [{
+        data: Object.values(data.categories),
+        backgroundColor: colors.slice(0, Object.keys(data.categories).length),
+        borderColor: '#fff',
+        borderWidth: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: {
+        animateRotate: true,
+        animateScale: true,
+        duration: 2000,
+        easing: 'easeOutElastic'
+      },
+      plugins: {
+        legend: { display: false },
+        datalabels: {
+          color: '#fff',
+          formatter: (value) => ((value / totalCount) * 100).toFixed(1) + '%',
+          font: { weight: 'bold', size: 13 }
+        }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+
+  // LEGEND - Stylish Rounded Chips
+  const legend = document.getElementById('categoryLegend');
+  legend.innerHTML = '';
+  Object.entries(data.categories).forEach(([key, val], i) => {
+    legend.innerHTML += `
+      <div style="
+        display:flex;
+        align-items:center;
+        gap:10px;
+        background:#fff;
+        border-radius:20px;
+        box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        padding:8px 15px;
+        transition:all 0.3s ease;
+        width:85%;
+        justify-content:center;
+      " 
+      onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.2)'"
+      onmouseout="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'">
+        <span style="
+          display:inline-block;
+          width:16px;
+          height:16px;
+          background:${colors[i]};
+          border-radius:50%;
+          box-shadow:0 0 5px ${colors[i]};
+        "></span>
+        <span style="font-size:14px;font-weight:500;color:#333;">${key}</span>
+      </div>
+    `;
+  });
+
+  // LINE CHART - Smooth Stock Animation
+  const ctxLine = document.getElementById('dailyLineChart').getContext('2d');
+  new Chart(ctxLine, {
+    type: 'line',
+    data: {
+      labels: data.daily_labels,
+      datasets: [{
+        label: 'Queries per Day',
+        data: data.daily_queries,
+        borderColor: '#E53935',
+        backgroundColor: 'rgba(229, 57, 53, 0.2)',
+        pointBackgroundColor: '#B71C1C',
+        borderWidth: 3,
+        fill: true,
+        tension: 0.35
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: {
+        duration: 2500,
+        easing: 'easeInOutQuart'
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: { color: '#eee' },
+          ticks: { color: '#444' }
+        },
+        x: {
+          grid: { color: 'transparent' },
+          ticks: { color: '#444' }
+        }
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+          labels: { color: '#333', font: { weight: '600' } }
+        }
+      }
+    }
+  });
+}
+
+loadDashboardData();
+</script>
+
+</body>
+</html>

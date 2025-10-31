@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ page|capitalize }} - Global Wellness App</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<style>
+body { background: #f0f4f5; font-family: Arial, sans-serif; }
+.app-title {
+  text-align:center;
+  margin-top:30px;
+  color:#4CAF50;
+  font-weight:bold;
+}
+.card {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+a { text-decoration: none; font-size: 0.9rem; color:#007bff; }
+a:hover { color:#0056b3; }
+.alert { margin-top:10px; }
+.password-wrapper {
+  position: relative;
+}
+.password-wrapper .toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6c757d;
+}
+.password-wrapper .toggle-password:hover {
+  color: #000;
+}
+</style>
+</head>
+<body>
+
+<h2 class="app-title">Global Wellness Chatbot</h2>
+
+<div class="card">
+  <h3 class="text-center mb-3">{{ page|capitalize }}</h3>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, msg in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ msg }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <form method="POST">
+    {% if page=='register' %}
+      <div class="mb-3"><input type="email" name="email" class="form-control" placeholder="Email" required></div>
+      <div class="mb-3 password-wrapper">
+        <input type="password" name="password" class="form-control" placeholder="Password" required>
+        <i class="bi bi-eye toggle-password"></i>
+      </div>
+      <div class="mb-3 password-wrapper">
+        <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password" required>
+        <i class="bi bi-eye toggle-password"></i>
+      </div>
+      <button class="btn btn-success w-100"><i class="bi bi-person-plus"></i> Create Account</button>
+      <p class="mt-2 text-center"><a href="{{ url_for('login') }}">Already have an account? Login</a></p>
+
+    {% elif page=='login' %}
+      <div class="mb-3"><input type="email" name="email" class="form-control" placeholder="Email" required></div>
+      <div class="mb-3 password-wrapper">
+        <input type="password" name="password" class="form-control" placeholder="Password" required>
+        <i class="bi bi-eye toggle-password"></i>
+      </div>
+      <button class="btn btn-success w-100"><i class="bi bi-box-arrow-in-right"></i> Login</button>
+      <p class="mt-2 text-center">
+        <a href="{{ url_for('register') }}">New user? Create Account</a> | 
+        <a href="{{ url_for('reset') }}">Reset Password</a>
+      </p>
+
+    {% elif page=='reset' %}
+      <div class="mb-3"><input type="email" name="email" class="form-control" placeholder="Email" required></div>
+      <div class="mb-3 password-wrapper">
+        <input type="password" name="password" class="form-control" placeholder="New Password" required>
+        <i class="bi bi-eye toggle-password"></i>
+      </div>
+      <div class="mb-3 password-wrapper">
+        <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password" required>
+        <i class="bi bi-eye toggle-password"></i>
+      </div>
+      <button class="btn btn-success w-100"><i class="bi bi-key"></i> Update Password</button>
+      <p class="mt-2 text-center"><a href="{{ url_for('login') }}">Back to Login</a></p>
+
+    {% elif page=='profile' %}
+      <div class="mb-3"><input type="text" name="name" class="form-control" placeholder="Name" value="{{ user[2] or '' }}" required></div>
+      <div class="mb-3"><input type="number" name="age" class="form-control" placeholder="Age" value="{{ user[3] or 18 }}" required></div>
+      <div class="mb-3 d-flex gap-3">
+        <div class="form-check"><input class="form-check-input" type="radio" name="lang" value="English" id="eng" {% if user[4]=='English' or not user[4] %}checked{% endif %}><label class="form-check-label" for="eng">English</label></div>
+        <div class="form-check"><input class="form-check-input" type="radio" name="lang" value="Hindi" id="hin" {% if user[4]=='Hindi' %}checked{% endif %}><label class="form-check-label" for="hin">Hindi</label></div>
+      </div>
+      <button class="btn btn-success w-100"><i class="bi bi-save"></i> Save Changes</button>
+      <p class="mt-2 text-center"><a href="{{ url_for('logout') }}">Logout</a></p>
+    {% endif %}
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.querySelectorAll('.toggle-password').forEach(icon => {
+  icon.addEventListener('click', function() {
+    const input = this.previousElementSibling;
+    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+    input.setAttribute('type', type);
+    this.classList.toggle('bi-eye');
+    this.classList.toggle('bi-eye-slash');
+  });
+});
+</script>
+</body>
+</html>

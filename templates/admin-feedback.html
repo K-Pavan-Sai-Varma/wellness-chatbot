@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback | Health Assistant</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body { background:#f0f4f5; font-family:'Poppins',sans-serif; }
+    .sidebar {
+      width:220px; height:100vh; position:fixed; left:0; top:0;
+      background:#4CAF50; color:white; padding:20px;
+      display:flex; flex-direction:column; gap:15px;
+    }
+    .sidebar a { color:white; text-decoration:none; display:block; padding:10px 15px; border-radius:8px; }
+    .sidebar a:hover, .sidebar a.active { background:#388E3C; }
+    .main { margin-left:240px; padding:20px; }
+    .table td, .table th { vertical-align: middle; text-align:center; }
+
+    /* ✅ Adjusted column widths */
+    th:nth-child(1), td:nth-child(1) { width: 5%; }      /* Serial Number */
+    th:nth-child(2), td:nth-child(2) { width: 18%; }     /* User */
+    th:nth-child(3), td:nth-child(3) { width: 32%; text-align:left; } /* Query */
+    th:nth-child(4), td:nth-child(4) { width: 8%; }      /* Feedback icons */
+    th:nth-child(5), td:nth-child(5) { width: 22%; text-align:left; } /* Comment */
+    th:nth-child(6), td:nth-child(6) { width: 15%; }     /* Time */
+
+    /* ✅ Truncate long text gracefully */
+    td:nth-child(3), td:nth-child(5) {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 300px;
+    }
+
+    /* ✅ Tooltip styling (Bootstrap handles main look) */
+    [data-bs-toggle="tooltip"] {
+      cursor: help;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h4><i class="bi bi-person-lock"></i> Admin Panel</h4>
+    <a href="/admin/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a href="/admin/knowledge"><i class="bi bi-book"></i> Knowledge Base</a>
+    <a href="/admin/feedback" class="active"><i class="bi bi-chat-left-dots"></i> Feedback</a>
+    <a href="/admin/settings"><i class="bi bi-gear"></i> Settings</a>
+    <a href="/admin/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <div class="container">
+      <h3 class="mb-4"><i class="bi bi-chat-dots"></i> User Feedback</h3>
+      <table class="table table-bordered bg-white shadow-sm align-middle">
+        <thead class="table-success text-center">
+          <tr>
+            <th>#</th>
+            <th>User</th>
+            <th>Query</th>
+            <th>Feedback</th>
+            <th>Comment</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for f in feedbacks %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ f.user }}</td>
+            <td data-bs-toggle="tooltip" title="{{ f.query }}">{{ f.query }}</td>
+            <td>
+              {% if f.type == 'positive' %}
+                <i class="bi bi-hand-thumbs-up-fill text-success fs-5"></i>
+              {% elif f.type == 'negative' %}
+                <i class="bi bi-hand-thumbs-down-fill text-danger fs-5"></i>
+              {% else %}
+                <i class="bi bi-chat-dots text-secondary fs-5"></i>
+              {% endif %}
+            </td>
+            <td data-bs-toggle="tooltip" title="{{ f.comment }}">{{ f.comment or '-' }}</td>
+            <td>{{ f.time }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ✅ Bootstrap JS for tooltips -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Enable all tooltips globally
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    [...tooltipTriggerList].map(el => new bootstrap.Tooltip(el));
+  </script>
+</body>
+</html>

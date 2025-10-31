@@ -1,0 +1,66 @@
+# ===============================
+# 🔹 Python cache & environment
+# ===============================
+_pycache_/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.log
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# ===============================
+# 🔹 IDE / Editor files
+# ===============================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ===============================
+# 🔹 OS system files
+# ===============================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===============================
+# 🔹 Local databases & data files
+# ===============================
+*.db
+database.db
+
+# ===============================
+# 🔹 Offline / Heavy model folders
+# ===============================
+offline_models/
+
+# ===============================
+# 🔹 Docker and build files
+# ===============================
+*.tar
+*.img
+*.bak
+*.tmp
+.dockerignore
+
+# ===============================
+# 🔹 Environment & secrets
+# ===============================
+*.env
+.env.local
+secrets.json
+
+# ===============================
+# 🔹 Other temporary files
+# ===============================
+__MACOSX/
+*.zip
+*.rar
+*.7z

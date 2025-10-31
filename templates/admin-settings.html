@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Settings | Health Assistant</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body { background:#f0f4f5; font-family:'Poppins',sans-serif; }
+    .sidebar {
+      width:220px; height:100vh; position:fixed; left:0; top:0;
+      background:#4CAF50; color:white; padding:20px;
+      display:flex; flex-direction:column; gap:15px;
+    }
+    .sidebar a { color:white; text-decoration:none; display:block; padding:10px 15px; border-radius:8px; }
+    .sidebar a:hover, .sidebar a.active { background:#388E3C; }
+    .main { margin-left:240px; padding:20px; }
+    .btn-custom { background:#4CAF50; color:white; border:none; }
+    .btn-custom:hover { background:#43a047; }
+    .container { margin-top:40px; max-width:600px; }
+    .section-card {
+      background:white; border-radius:12px; padding:25px; box-shadow:0 0 10px rgba(0,0,0,0.1);
+      margin-bottom:25px;
+    }
+    .password-toggle {
+      position:absolute; right:15px; top:50%; transform:translateY(-50%);
+      cursor:pointer; color:#666;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h4><i class="bi bi-person-lock"></i> Admin Panel</h4>
+    <a href="/admin/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a href="/admin/knowledge"><i class="bi bi-book"></i> Knowledge Base</a>
+    <a href="/admin/feedback"><i class="bi bi-chat-left-dots"></i> Feedback</a>
+    <a href="/admin/settings" class="active"><i class="bi bi-gear"></i> Settings</a>
+    <a href="/admin/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <div class="container">
+      <h3 class="mb-4"><i class="bi bi-gear"></i> Admin Settings</h3>
+
+      <!-- Change Password Section -->
+      <div class="section-card">
+        <h5 class="mb-3"><i class="bi bi-lock"></i> Change Admin Password</h5>
+        <form method="POST" action="/admin/change_password">
+          <div class="form-floating mb-3 position-relative">
+            <input type="password" name="current_password" id="current_password" class="form-control" placeholder="Current Password" required>
+            <label for="current_password">Current Password</label>
+            <i class="bi bi-eye-slash password-toggle" onclick="togglePassword('current_password', this)"></i>
+          </div>
+          <div class="form-floating mb-3 position-relative">
+            <input type="password" name="new_password" id="new_password" class="form-control" placeholder="New Password" required>
+            <label for="new_password">New Password</label>
+            <i class="bi bi-eye-slash password-toggle" onclick="togglePassword('new_password', this)"></i>
+          </div>
+          <div class="form-floating mb-3 position-relative">
+            <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm Password" required>
+            <label for="confirm_password">Confirm Password</label>
+            <i class="bi bi-eye-slash password-toggle" onclick="togglePassword('confirm_password', this)"></i>
+          </div>
+          <button class="btn btn-custom w-100 py-2"><i class="bi bi-check-circle"></i> Update Password</button>
+        </form>
+      </div>
+
+      <!-- Delete Data Section -->
+      <div class="section-card">
+        <h5 class="mb-3"><i class="bi bi-database-x"></i> Data Management</h5>
+        <form method="POST" action="/admin/delete_feedbacks" class="mb-3">
+          <button class="btn btn-danger w-100 py-2"><i class="bi bi-chat-left-dots"></i> Delete All Feedbacks</button>
+        </form>
+        <form method="POST" action="/admin/delete_users" class="mb-3">
+          <button class="btn btn-warning w-100 py-2"><i class="bi bi-person-x"></i> Delete All Users</button>
+        </form>
+        <form method="POST" action="/admin/delete_tips">
+          <button class="btn btn-secondary w-100 py-2"><i class="bi bi-journal-x"></i> Delete All Tips & Categories</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle password visibility
+    function togglePassword(fieldId, icon) {
+      const input = document.getElementById(fieldId);
+      if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("bi-eye-slash");
+        icon.classList.add("bi-eye");
+      } else {
+        input.type = "password";
+        icon.classList.remove("bi-eye");
+        icon.classList.add("bi-eye-slash");
+      }
+    }
+  </script>
+</body>
+</html>
