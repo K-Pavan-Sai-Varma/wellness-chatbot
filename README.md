@@ -55,11 +55,13 @@ Or Use Offline Models: Download them manually from the following links and store
 Example Model Links :
 
 
-Helsinki-NLP/opus-mt-en-hi – English ↔ Hindi
+[Helsinki-NLP/opus-mt-en-hi]( https://huggingface.co/Helsinki-NLP/opus-mt-en-hi
+) – English ↔ Hindi
 
-distilbert-base-uncased – Text understanding
+[distilbert-base-uncased](https://huggingface.co/distilbert-base-uncased
+) – Text understanding
 
-sentence-transformers/all-MiniLM-L6-v2 – Semantic similarity, emotion analysis, and contextual embedding generation
+[sentence-transformers/all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) – Semantic similarity, emotion analysis, and contextual embedding generation
 
 (You can add more depending on your multilingual needs.)
 
