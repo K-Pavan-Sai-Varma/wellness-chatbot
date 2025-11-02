@@ -22,6 +22,8 @@ Admin access includes restricted authentication with session validation.
 🗣 Key Features
 
 ✅ Multilingual Chatbot (Supports English + Multiple Languages)
+✅ Voice Input – Speak directly to the chatbot using your microphone
+✅ Voice Output – Click the 🔊 Speaker button to hear the bot’s response aloud
 ✅ Smart Mental Health Recommendations
 ✅ Separate Admin Panel for user management and analytics
 ✅ Dynamic, Interactive, and Responsive UI
@@ -55,13 +57,16 @@ Or Use Offline Models: Download them manually from the following links and store
 Example Model Links :
 
 
-Helsinki-NLP/opus-mt-en-hi – English ↔ Hindi
+[Helsinki-NLP/opus-mt-en-hi](https://huggingface.co/Helsinki-NLP/opus-mt-en-hi
+) – English ↔ Hindi
 
-distilbert-base-uncased – Text understanding
+[distilbert-base-uncased](https://huggingface.co/Helsinki-NLP/opus-mt-en-hi
+) – Text understanding
 
-sentence-transformers/all-MiniLM-L6-v2 – Semantic similarity, emotion analysis, and contextual embedding generation
+[sentence-transformers/all-MiniLM-L6-v2](https://huggingface.co/distilbert-base-uncased
+) – Semantic similarity, emotion analysis, and contextual embedding generation
 
-(You can add more depending on your multilingual needs.)
+
 
 
 
