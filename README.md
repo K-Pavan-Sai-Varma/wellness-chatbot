@@ -22,11 +22,17 @@ Admin access includes restricted authentication with session validation.
 🗣 Key Features
 
 ✅ Multilingual Chatbot (Supports English + Multiple Languages)
+
 ✅ Voice Input – Speak directly to the chatbot using your microphone
+
 ✅ Voice Output – Click the 🔊 Speaker button to hear the bot’s response aloud
+
 ✅ Smart Mental Health Recommendations
+
 ✅ Separate Admin Panel for user management and analytics
+
 ✅ Dynamic, Interactive, and Responsive UI
+
 ✅ Works with Offline or Online Models (Flexible Configuration)
 
 
