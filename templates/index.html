@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome | Health Assistant</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #a8edea, #fed6e3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* 🌍 Main Title Styling */
+    .main-title {
+      font-size: 2.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 35px;
+      text-align: center;
+      animation: slideDown 1.2s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .container {
+      width: 90%;
+      max-width: 900px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      background: rgba(255,255,255,0.4);
+      backdrop-filter: blur(12px);
+      padding: 50px;
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .left, .right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .welcome {
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .desc {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      padding: 14px 35px;
+      font-size: 1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 10px 0;
+      box-shadow: 0 5px 15px rgba(102,126,234,0.3);
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #764ba2, #667eea);
+      box-shadow: 0 8px 20px rgba(102,126,234,0.5);
+    }
+
+    footer {
+      position: absolute;
+      bottom: 15px;
+      text-align: center;
+      width: 100%;
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    @media(max-width:700px) {
+      .container {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .main-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 🌍 Global Title with Animation -->
+  <h1 class="main-title">Global Wellness Chatbot</h1>
+
+  <div class="container">
+    <div class="left">
+      <h1 class="welcome">Welcome to Your Health Assistant 🩺</h1>
+      <p class="desc">
+        Your smart AI companion for personalized health guidance and wellness tips.<br>
+        Choose how you'd like to continue below:
+      </p>
+    </div>
+
+    <div class="right">
+      <button class="btn" onclick="goUser()">Login as User</button>
+      <button class="btn" onclick="goAdmin()">Login as Admin</button>
+    </div>
+  </div>
+
+  <script>
+    function goUser() {
+      window.location.href = "/login";
+    }
+    function goAdmin() {
+      window.location.href = "/admin/login";
+    }
+  </script>
+</body>
+</html>
